@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, shallowRef, toRefs, useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, shallowRef, toRefs, useTemplateRef, watch } from 'vue'
 import nipplejs from 'nipplejs'
 
 const props = defineProps<{
@@ -29,6 +29,15 @@ const emit = defineEmits<{
 const { options } = toRefs(props)
 const manager = shallowRef<nipplejs.JoystickManager | null>(null)
 const nippleRef = useTemplateRef<HTMLDivElement>('nipple')
+
+watch(
+  () => options.value,
+  (value, prev) => {
+    if (JSON.stringify(value) !== JSON.stringify(prev)) {
+      createNipple()
+    }
+  },
+)
 
 onMounted(() => {
   createNipple()
@@ -72,11 +81,5 @@ function createNipple() {
 </script>
 
 <template>
-  <div ref="nipple" class="nipple"></div>
+  <div ref="nipple"></div>
 </template>
-
-<style scoped>
-.nipple {
-  position: relative;
-}
-</style>

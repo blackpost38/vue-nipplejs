@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, shallowRef, toRefs, useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, shallowRef, toRefs, useTemplateRef } from 'vue'
 import nipplejs from 'nipplejs'
 
 const props = defineProps<{
@@ -32,6 +32,13 @@ const nippleRef = useTemplateRef<HTMLDivElement>('nipple')
 
 onMounted(() => {
   createNipple()
+})
+
+onUnmounted(() => {
+  if (manager.value) {
+    manager.value.destroy()
+    manager.value = null
+  }
 })
 
 function createNipple() {

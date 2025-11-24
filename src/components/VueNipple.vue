@@ -2,9 +2,9 @@
 import { onMounted, onUnmounted, shallowRef, toRefs, useTemplateRef, watch } from 'vue'
 import nipplejs from 'nipplejs'
 
-const props = defineProps<{
-  options?: Omit<nipplejs.JoystickManagerOptions, 'zone'>
-}>()
+type Options = Omit<nipplejs.JoystickManagerOptions, 'zone'>
+
+const props = defineProps<{ options?: Options }>()
 const emit = defineEmits<{
   (e: 'start', event: nipplejs.EventData, data: nipplejs.JoystickOutputData): void
   (e: 'end', event: nipplejs.EventData, data: nipplejs.JoystickOutputData): void
@@ -34,13 +34,16 @@ watch(
   () => options.value,
   (value, prev) => {
     if (JSON.stringify(value) !== JSON.stringify(prev)) {
-      createNipple()
+      if (manager.value) {
+        manager.value.destroy()
+      }
+      manager.value = createManager(nippleRef.value!, value)
     }
   },
 )
 
 onMounted(() => {
-  createNipple()
+  manager.value = createManager(nippleRef.value!, options.value)
 })
 
 onUnmounted(() => {
@@ -50,33 +53,28 @@ onUnmounted(() => {
   }
 })
 
-function createNipple() {
-  if (manager.value) {
-    manager.value.destroy()
-  }
-  manager.value = nipplejs.create({
-    zone: nippleRef.value!,
-    ...options.value,
-  })
-  manager.value.on('start', (event, data) => emit('start', event, data))
-  manager.value.on('end', (event, data) => emit('end', event, data))
-  manager.value.on('move', (event, data) => emit('move', event, data))
-  manager.value.on('dir', (event, data) => emit('dir', event, data))
-  manager.value.on('dir:up', (event, data) => emit('dir:up', event, data))
-  manager.value.on('dir:down', (event, data) => emit('dir:down', event, data))
-  manager.value.on('dir:right', (event, data) => emit('dir:right', event, data))
-  manager.value.on('dir:left', (event, data) => emit('dir:left', event, data))
-  manager.value.on('plain', (event, data) => emit('plain', event, data))
-  manager.value.on('plain:up', (event, data) => emit('plain:up', event, data))
-  manager.value.on('plain:down', (event, data) => emit('plain:down', event, data))
-  manager.value.on('plain:right', (event, data) => emit('plain:right', event, data))
-  manager.value.on('plain:left', (event, data) => emit('plain:left', event, data))
-  manager.value.on('shown', (event, data) => emit('shown', event, data))
-  manager.value.on('hidden', (event, data) => emit('hidden', event, data))
-  manager.value.on('destroyed', (event, data) => emit('destroyed', event, data))
-  manager.value.on('pressure', (event, data) => emit('pressure', event, data))
-  manager.value.on('added', (event, data) => emit('added', event, data))
-  manager.value.on('removed', (event, data) => emit('removed', event, data))
+function createManager(zone: HTMLElement, options: Options = {}) {
+  const manager = nipplejs.create({ zone, ...options })
+  manager.on('start', (event, data) => emit('start', event, data))
+  manager.on('end', (event, data) => emit('end', event, data))
+  manager.on('move', (event, data) => emit('move', event, data))
+  manager.on('dir', (event, data) => emit('dir', event, data))
+  manager.on('dir:up', (event, data) => emit('dir:up', event, data))
+  manager.on('dir:down', (event, data) => emit('dir:down', event, data))
+  manager.on('dir:right', (event, data) => emit('dir:right', event, data))
+  manager.on('dir:left', (event, data) => emit('dir:left', event, data))
+  manager.on('plain', (event, data) => emit('plain', event, data))
+  manager.on('plain:up', (event, data) => emit('plain:up', event, data))
+  manager.on('plain:down', (event, data) => emit('plain:down', event, data))
+  manager.on('plain:right', (event, data) => emit('plain:right', event, data))
+  manager.on('plain:left', (event, data) => emit('plain:left', event, data))
+  manager.on('shown', (event, data) => emit('shown', event, data))
+  manager.on('hidden', (event, data) => emit('hidden', event, data))
+  manager.on('destroyed', (event, data) => emit('destroyed', event, data))
+  manager.on('pressure', (event, data) => emit('pressure', event, data))
+  manager.on('added', (event, data) => emit('added', event, data))
+  manager.on('removed', (event, data) => emit('removed', event, data))
+  return manager
 }
 </script>
 

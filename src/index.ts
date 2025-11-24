@@ -1,1 +1,3 @@
-export { default as VueNipple } from '@/components/VueNipple.vue'
+import VueNipple from '@/components/VueNipple.vue'
+
+export default VueNipple

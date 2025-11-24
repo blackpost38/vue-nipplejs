@@ -1,54 +1,76 @@
-# .
+# vue-nipplejs
 
-This template should help get you started developing with Vue 3 in Vite.
+> Vue wrapper component for nipplejs — a virtual joystick for touch capable interfaces.
 
-## Recommended IDE Setup
+Lightweight Vue 3 component that integrates the [nipplejs](https://github.com/yoannmoinet/nipplejs) virtual joystick, providing a simple API of props and events for use in Vue applications.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Quick start
 
-## Recommended Browser Setup
+Install into your project (this package declares `vue` as a peer dependency):
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```bash
+npm install vue-nipplejs
+npm install vue@^3   # ensure Vue 3 is installed in the consumer project
 ```
 
-### Compile and Hot-Reload for Development
+If you are developing the library locally, use the dev dependencies:
 
-```sh
+```bash
+npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## Usage
 
-```sh
-npm run build
+Register locally (single-file component example):
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { VueNipple } from 'vue-nipplejs'
+
+const onMove = (evt) => {
+  // evt contains nipplejs data (direction, distance, vector, etc.)
+  console.log('move', evt)
+}
+</script>
+
+<template>
+  <div class="example">
+    <VueNipple :options="{ mode: 'static' }" @move="onMove" />
+  </div>
+</template>
+
+<style>
+.example {
+  position: relative;
+  height: 300px;
+}
+/* container should have a positioning context for the joystick */
+</style>
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Or register globally in your app:
 
-```sh
-npm run test:unit
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import { VueNipple } from 'vue-nipplejs'
+
+const app = createApp(App)
+app.component('VueNipple', VueNipple)
+app.mount('#app')
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Notes
 
-```sh
-npm run lint
-```
+- This package declares `vue` as a `peerDependency` — consumers must provide Vue 3 in their projects to avoid duplicate Vue instances.
+- `nipplejs` is included as a runtime dependency, so it does not need to be separately installed by consumers.
+
+## Contributing
+
+PRs welcome. Please follow existing coding style and run formatting and lint scripts before submitting. Run tests with `npm run test:unit`.
+
+## License
+
+MIT — see `LICENSE` (or add a license file if needed).

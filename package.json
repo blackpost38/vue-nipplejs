@@ -11,10 +11,11 @@
   "exports": {
     ".": {
       "import": "./dist/vue-nipplejs.js",
+      "types": "./dist/index.d.ts",
       "require": "./dist/vue-nipplejs.umd.cjs"
     }
   },
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },

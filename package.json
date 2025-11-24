@@ -2,8 +2,18 @@
   "name": "vue-nipplejs",
   "description": "Vue wrapper component for nipplejs — A virtual joystick for touch capable interfaces.",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-nipplejs.umd.cjs",
+  "module": "./dist/vue-nipplejs.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-nipplejs.js",
+      "require": "./dist/vue-nipplejs.umd.cjs"
+    }
+  },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },

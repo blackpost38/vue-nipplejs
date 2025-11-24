@@ -27,7 +27,7 @@ Register locally (single-file component example):
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { VueNipple } from 'vue-nipplejs'
+import VueNipple from 'vue-nipplejs'
 
 const onMove = (evt) => {
   // evt contains nipplejs data (direction, distance, vector, etc.)
@@ -55,7 +55,7 @@ Or register globally in your app:
 ```js
 import { createApp } from 'vue'
 import App from './App.vue'
-import { VueNipple } from 'vue-nipplejs'
+import VueNipple from 'vue-nipplejs'
 
 const app = createApp(App)
 app.component('VueNipple', VueNipple)

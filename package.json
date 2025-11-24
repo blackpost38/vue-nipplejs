@@ -28,7 +28,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "vue": "^3.5.22"
+    "nipplejs": "^0.10.2"
+  },
+  "peerDependencies": {
+    "vue": "^3"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
@@ -50,6 +53,7 @@
     "vite": "^7.1.11",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vitest": "^3.2.4",
+    "vue": "^3.5.22",
     "vue-tsc": "^3.1.1"
   }
 }
